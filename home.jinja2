@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+{% if view.logged_in == None %}
+<div>
+    <h1><a href="{{request.application_url}}/login">Log In</a></h1>
+{% else %}
+<h1>Olá {{ name }}!<small><a href="{{request.application_url}}/logout">Logout</a></small></h1>
+<div>
+  <p>
+    <a href="{{request.application_url}}/link">Adicionar link.</a>
+    {% if view.privilege == 4 %}
+    <br>
+    <a href="{{request.application_url}}/editar_usuario">Adicionar usuário.</a>
+    {% endif %}
+  </p>
+{% endif %}
+</div>
+<hr>
+{% for i in items %}
+<div>
+  <p>
+    <a href='{{i.link}}'>{{i.link}}</a> ----- {{i.description}} - Likes: {{i.likes}} Dislikes: {{i.dislikes}}
+    <br>
+    <form action="{{request.application_url}}/link_delete" method="post">
+      <input type='hidden' name="link" value="{{i.link}}" >
+      <button action='submit'>Deletar</button>
+    </form>
+    <form action="{{request.application_url}}/link_like" method="post">
+      <input type='hidden' name="link" value="{{i.link}}" >
+      <input type='hidden' name="like" value="like" >
+      <button action='submit'>Like</button>
+    </form>
+    <form action="{{request.application_url}}/link_like" method="post">
+      <input type='hidden' name="link" value="{{i.link}}">
+      <input type='hidden' name="like" value="dislike" >
+      <button action='submit'>Dislike</button>
+    </form>
+    <hr>
+  </p>
+</div>
+{% endfor %}
+</body>
+</html>

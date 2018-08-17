@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Editar usuário</title>
+</head>
+<body>
+{{message}}
+<form method='post'>
+  Nome de usuário: <input placeholder="Nome de usuário" name='username' required></input>
+  <br>
+  Senha: <input type="password" name='password' required></input>
+  <br>
+  Level:
+  <input type="radio" name="level" value="1" required> 1
+  <input type="radio" name="level" value="2" required> 2
+  <input type="radio" name="level" value="3" required> 3
+  <input type="radio" name="level" value="4" required> 4
+  <br>
+  <input type="submit" name="form.submitted" value="Enviar">
+</form>
+</body>
+</html>
