@@ -10,6 +10,7 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.security import remember, forget
 from auth import groupfinder, hashed_password, check_password, get_privileges, hash_password
 # Conector oficial do MongoDB
+import pymongo
 from pymongo import MongoClient
 
 class appViews:
@@ -72,7 +73,8 @@ class appViews:
             port=DB_PORT
         )
         links = db[DB_NAME]['links']
-        links = links.find()
+        # links = links.find()
+        links = links.find().sort([("points", pymongo.DESCENDING)])
 
         return dict(name=self.logged_in, items=links)
 
@@ -163,7 +165,8 @@ class appViews:
                         'link': link,
                         'description': description,
                         'likes': 0,
-                        'dislikes': 0
+                        'dislikes': 0,
+                        'points': 0
                     })
                     return HTTPFound(location=came_from)
                 elif get_privileges(self.logged_in) >= 2:
@@ -255,6 +258,7 @@ class appViews:
                         'link': link},
                         {'$set':{
                         'likes': item['likes'] + 1,
+                        'points': item['likes'] - item['dislikes'] + 1
                     }})
                     return HTTPFound(location=came_from)
                 else:
@@ -262,6 +266,7 @@ class appViews:
                         'link': link},
                         {'$set':{
                         'dislikes': item['dislikes'] + 1,
+                        'points': item['likes'] - item['dislikes'] - 1
                     }})
                     return HTTPFound(location=came_from)
 
